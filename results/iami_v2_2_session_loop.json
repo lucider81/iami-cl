@@ -1,0 +1,21 @@
+{
+  "version": "2.2-session-loop",
+  "description": "Fresh session test: load checkpoint → feed new doc → verify → checkpoint → reload",
+  "checkpoint_source": "/mnt/agents/output/rnn_v2_2_fixed.json",
+  "checkpoint_evolved": "/mnt/agents/output/rnn_session_2.json",
+  "sessions": {
+    "1_load": {"source": "checkpoint", "h_norm": 0.0, "docs_0_3_acc": [1.0, 1.0, 1.0, 1.0]},
+    "2_feed_doc4": {"doc": "XI_Compression", "chunks": 18, "h_norm_before": 2.729, "h_norm_after": 1.783, "h_norm_delta": -0.945},
+    "3_verify": {"docs_0_3_acc": [1.0, 1.0, 1.0, 1.0], "doc4_acc": 0.0, "note": "0% expected — inference only, no gradient updates"},
+    "4_checkpoint": {"path": "/mnt/agents/output/rnn_session_2.json", "h_norm": 1.783, "size_bytes": 1097144},
+    "5_reload_verify": {"h_identical": true, "Wxh_identical": true, "Whh_identical": true, "docs_0_3_acc": [1.0, 1.0, 1.0, 1.0], "doc4_acc": 0.0}
+  },
+  "interpretation": {
+    "weights": "Carry long-term trained knowledge (100% on docs 0-3)",
+    "hidden_state": "Evolves during forward passes — working memory / session context",
+    "doc4_zero": "Expected: no gradients = no weight updates. h_state changed but weights didn't learn class 4.",
+    "to_learn_new_doc": "Run PyTorch training loop with backprop → re-export → new checkpoint"
+  },
+  "key_finding": "PersistentRNN checkpointing preserves both weights (knowledge) and h_state (context) across session boundaries. Bit-exact round-trip verified.",
+  "timestamp": "2026-07-11"
+}
