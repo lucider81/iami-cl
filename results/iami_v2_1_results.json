@@ -1,66 +1,62 @@
 {
   "version": "2.1",
-  "audit_response": "Addresses all 8 findings from second audit",
-  "fixes_applied": {
-    "1_multiclass_head": "Single softmax over all classes (not binary per-task)",
-    "2_document_split": "Entire documents held out (train/val/test)",
-    "3_tfidf_on_train_only": "Vectorizer fit exclusively on training chunks",
-    "4_replay_architecture": "All samples through same multiclass head",
-    "5_accuracy_matrix": "R[i][j] + BWT + forgetting per task",
-    "6_real_mnist": "torchvision MNIST with actual pixel permutations",
-    "7_ablation": "No-replay baseline vs replay comparison",
-    "8_closed_loop_lvh": "Coherence drop triggers +0.1 replay increase"
-  },
-  "source_hash": "1ff1bd3d78125df3",
-  "config": {
-    "replay_ratio_initial": 0.3,
-    "lr": 0.001,
-    "epochs": 80,
-    "hdim": 64,
-    "dropout": 0.5,
-    "buf_size": 200,
-    "weight_decay": 1e-4,
-    "train_docs": ["IAMI_WP", "Love", "CSA", "Heosphoros"],
-    "val_doc": ["XI"],
-    "test_docs": ["Octad", "Hunter"]
-  },
+  "source_hash": "cb3c595f0c631f9b",
+  "source_file": "iami_v2_1.py",
+  "audit_fixes": ["multiclass_head", "document_split", "tfidf_train_only", "replay_same_head", "accuracy_matrix", "real_mnist", "ablation_baseline", "closed_loop_lvh"],
+  "caveat": "Task-IL: task ID supplied at inference. Not Class-IL. BWT -0.034 measures Task-IL retention only.",
+  "config": {"replay_ratio": 0.3, "lr": 0.001, "epochs": 80, "hdim": 64, "dropout": 0.5, "buf_size": 200, "weight_decay": 1e-4, "train_docs": ["IAMI_WP", "Love", "CSA", "Heosphoros"], "val_doc": ["XI"], "test_docs": ["Octad", "Hunter"]},
   "document_cl": {
     "n_tasks": 4,
-    "n_classes_total": 7,
-    "replay_30pct": {
-      "final_avg_acc": {"mean": 0.966, "std": 0.065, "values": [1.0, 0.836, 1.0, 0.977, 1.0]},
-      "bwt": {"mean": -0.034, "std": 0.065, "values": [0.0, -0.164, 0.0, -0.023, 0.0]},
-      "multi_seed": [42, 43, 44, 45, 46]
-    },
-    "no_replay": {
-      "final_avg_acc": {"mean": 0.592, "std": 0.199, "values": [0.25, 0.625, 0.75, 0.562, 0.75]},
-      "bwt": {"mean": -0.408, "std": 0.199, "values": [-0.75, -0.375, -0.25, -0.438, -0.25]}
-    },
-    "improvement": 0.374
+    "n_classes": 7,
+    "replay_30pct": {"final_avg_acc": {"mean": 0.966, "std": 0.065, "values": [1.0, 0.836, 1.0, 0.977, 1.0]}, "bwt": {"mean": -0.034, "std": 0.065, "values": [0.0, -0.164, 0.0, -0.023, 0.0]}, "seeds": [42, 43, 44, 45, 46]},
+    "no_replay": {"final_avg_acc": {"mean": 0.592, "std": 0.199, "values": [0.25, 0.625, 0.75, 0.562, 0.75]}, "bwt": {"mean": -0.408, "std": 0.199, "values": [-0.75, -0.375, -0.25, -0.438, -0.25]}},
+    "improvement": 0.374,
+    "pr_analysis": {
+      "class_0_IAMI_WP": {"AP": 1.0, "curves": [
+        {"threshold": 0.1, "precision": 0.762, "recall": 1.0, "tp": 32, "fp": 10, "fn": 0},
+        {"threshold": 0.3, "precision": 1.0, "recall": 1.0, "tp": 32, "fp": 0, "fn": 0},
+        {"threshold": 0.5, "precision": 1.0, "recall": 1.0, "tp": 32, "fp": 0, "fn": 0},
+        {"threshold": 0.7, "precision": 1.0, "recall": 1.0, "tp": 32, "fp": 0, "fn": 0},
+        {"threshold": 0.9, "precision": 1.0, "recall": 0.281, "tp": 9, "fp": 0, "fn": 23}
+      ]},
+      "class_1_Love": {"AP": 1.0, "curves": [
+        {"threshold": 0.1, "precision": 1.0, "recall": 1.0, "tp": 10, "fp": 0, "fn": 0},
+        {"threshold": 0.3, "precision": 1.0, "recall": 1.0, "tp": 10, "fp": 0, "fn": 0},
+        {"threshold": 0.5, "precision": 0.0, "recall": 0.0, "tp": 0, "fp": 0, "fn": 10},
+        {"threshold": 0.7, "precision": 0.0, "recall": 0.0, "tp": 0, "fp": 0, "fn": 10},
+        {"threshold": 0.9, "precision": 0.0, "recall": 0.0, "tp": 0, "fp": 0, "fn": 10}
+      ]},
+      "class_2_CSA": {"AP": 1.0, "curves": [
+        {"threshold": 0.1, "precision": 0.4, "recall": 1.0, "tp": 12, "fp": 18, "fn": 0},
+        {"threshold": 0.3, "precision": 1.0, "recall": 1.0, "tp": 12, "fp": 0, "fn": 0},
+        {"threshold": 0.5, "precision": 1.0, "recall": 1.0, "tp": 12, "fp": 0, "fn": 0},
+        {"threshold": 0.7, "precision": 1.0, "recall": 1.0, "tp": 12, "fp": 0, "fn": 0},
+        {"threshold": 0.9, "precision": 1.0, "recall": 0.5, "tp": 6, "fp": 0, "fn": 6}
+      ]},
+      "class_3_Heosphoros": {"AP": 1.0, "curves": [
+        {"threshold": 0.1, "precision": 0.273, "recall": 1.0, "tp": 9, "fp": 24, "fn": 0},
+        {"threshold": 0.3, "precision": 1.0, "recall": 1.0, "tp": 9, "fp": 0, "fn": 0},
+        {"threshold": 0.5, "precision": 1.0, "recall": 1.0, "tp": 9, "fp": 0, "fn": 0},
+        {"threshold": 0.7, "precision": 1.0, "recall": 0.778, "tp": 7, "fp": 0, "fn": 2},
+        {"threshold": 0.9, "precision": 0.0, "recall": 0.0, "tp": 0, "fp": 0, "fn": 9}
+      ]}
+    }
   },
   "permuted_mnist": {
     "data_source": "torchvision.datasets.MNIST (real)",
     "n_tasks": 5,
     "samples_per_task": 600,
     "permutation": "actual pixel permutation (not synthetic Gaussian)",
-    "replay_30pct": {
-      "final_avg_acc": 0.727,
-      "bwt": -0.0063,
-      "per_task": {"T0": 0.762, "T1": 0.714, "T2": 0.743, "T3": 0.758, "T4": 0.727}
-    },
-    "no_replay": {
-      "final_avg_acc": 0.715,
-      "bwt": -0.0230,
-      "per_task": {"T0": 0.762, "T1": 0.649, "T2": 0.620, "T3": 0.651, "T4": 0.715}
-    },
+    "replay_30pct": {"final_avg_acc": 0.727, "bwt": -0.006, "per_task": {"T0": 0.762, "T1": 0.714, "T2": 0.743, "T3": 0.758, "T4": 0.727}},
+    "no_replay": {"final_avg_acc": 0.715, "bwt": -0.023, "per_task": {"T0": 0.762, "T1": 0.649, "T2": 0.620, "T3": 0.651, "T4": 0.715}},
     "improvement": 0.012
   },
   "disclaimers": [
-    "Document CL evaluates on 4 training-domain tasks only",
-    "Task-IL setting: task ID supplied at inference",
+    "Task-IL setting: task ID supplied at inference (not Class-IL)",
+    "HPO not performed: config is hand-tuned (regression from v1.9 Heosphoros)",
     "MNIST uses 600 samples/task (subset of full 60K)",
-    "HPO not performed: hand-tuned config",
-    "Val/test classes never seen during training — correct Class-IL behavior"
+    "Document CL: 4 training tasks, val/test are unseen classes",
+    "PR analysis generated by iami_v2_1.py threshold_analysis() function"
   ],
   "timestamp": "2026-07-11"
 }
