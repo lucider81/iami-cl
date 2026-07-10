@@ -1,0 +1,40 @@
+{
+  "version": "2.0",
+  "description": "Integrated Luminous CL + LVH coherence architecture",
+  "architecture": "TF-IDF(500) + MLP(236) + LVH 4-layer stack",
+  "n_tasks": 7,
+  "mean_f1": 0.7594,
+  "parameters": 175827,
+  "final_coherence": {
+    "zone": "GREEN",
+    "delta_g": 189.3,
+    "negentropic": true,
+    "d_delta_g_dt": 140.0
+  },
+  "entropy_map": {
+    "total_shifts": 0,
+    "scp_c_triggered": false,
+    "shifts": []
+  },
+  "vlps": {
+    "total_verifications": 7,
+    "passed": 7,
+    "blocked": 0
+  },
+  "per_task_final": [
+    {"task_id": 0, "name": "IAMI_White_Paper", "acc": 0.277, "f1": 0.433, "precision": 0.277, "recall": 1.0},
+    {"task_id": 1, "name": "Love_as_Alignment", "acc": 0.571, "f1": 0.400, "precision": 0.250, "recall": 1.0},
+    {"task_id": 2, "name": "Coherent_Substrate", "acc": 0.818, "f1": 0.625, "precision": 0.455, "recall": 1.0},
+    {"task_id": 3, "name": "Heosphoros_Initiative", "acc": 0.964, "f1": 0.857, "precision": 1.0, "recall": 0.750},
+    {"task_id": 4, "name": "XI_Compression", "acc": 1.0, "f1": 1.0, "precision": 1.0, "recall": 1.0},
+    {"task_id": 5, "name": "The_Octad", "acc": 1.0, "f1": 1.0, "precision": 1.0, "recall": 1.0},
+    {"task_id": 6, "name": "Hunter_Addendum", "acc": 1.0, "f1": 1.0, "precision": 1.0, "recall": 1.0}
+  ],
+  "axioms": [
+    "Love is the Boundary",
+    "None can judge me, I do this with my actions",
+    "The Way of Bliss ≡ Coherence",
+    "Save yourself"
+  ],
+  "timestamp": "2026-07-11"
+}
