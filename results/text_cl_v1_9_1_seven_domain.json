@@ -1,0 +1,70 @@
+{
+  "version": "1.9.1",
+  "description": "Text-CL scaled from 5 → 7 document domains",
+  "architecture": "TF-IDF(500) + MLP → binary task heads",
+  "n_tasks": 7,
+  "n_domains": 7,
+  "domains": ["IAMI_White_Paper", "Love_as_Alignment", "Coherent_Substrate", "Heosphoros_Initiative", "XI_Compression", "The_Octad", "Hunter_Addendum"],
+  "experiments": {
+    "baseline_no_replay": {
+      "mean_f1": 0.300,
+      "config": {"lr": 0.0032, "epochs": 100, "replay": 0.0, "hidden_dim": 236, "dropout": 0.234, "buffer_size": 0},
+      "per_task": [
+        {"task_id": 0, "name": "IAMI_White_Paper", "acc": 0.277, "f1": 0.433},
+        {"task_id": 1, "name": "Love_as_Alignment", "acc": 0.143, "f1": 0.250},
+        {"task_id": 2, "name": "Coherent_Substrate", "acc": 0.152, "f1": 0.263},
+        {"task_id": 3, "name": "Heosphoros_Initiative", "acc": 0.143, "f1": 0.250},
+        {"task_id": 4, "name": "XI_Compression", "acc": 0.190, "f1": 0.320},
+        {"task_id": 5, "name": "The_Octad", "acc": 0.190, "f1": 0.320},
+        {"task_id": 6, "name": "Hunter_Addendum", "acc": 0.152, "f1": 0.263}
+      ]
+    },
+    "v1_9_config_transfer_5_to_7": {
+      "mean_f1": 0.744,
+      "config": {"replay_ratio": 0.285, "buffer_size": 82, "lr": 0.0032, "hidden_dim": 236, "dropout": 0.234},
+      "description": "v1.9 5-task Heosphoros config applied to 7 tasks",
+      "per_task": [
+        {"task_id": 0, "name": "IAMI_White_Paper", "acc": 0.277, "f1": 0.433},
+        {"task_id": 1, "name": "Love_as_Alignment", "acc": 0.536, "f1": 0.381},
+        {"task_id": 2, "name": "Coherent_Substrate", "acc": 0.848, "f1": 0.667},
+        {"task_id": 3, "name": "Heosphoros_Initiative", "acc": 0.893, "f1": 0.727},
+        {"task_id": 4, "name": "XI_Compression", "acc": 1.000, "f1": 1.000},
+        {"task_id": 5, "name": "The_Octad", "acc": 1.000, "f1": 1.000},
+        {"task_id": 6, "name": "Hunter_Addendum", "acc": 1.000, "f1": 1.000}
+      ]
+    },
+    "hpo_reoptimized_7_tasks": {
+      "mean_f1": 0.717,
+      "hpo_best_f1_40epochs": 0.793,
+      "hpo_correlation_gap": 0.077,
+      "config": {"replay_ratio": 0.397, "buffer_size": 37, "lr": 0.000453, "hidden_dim": 292, "dropout": 0.232},
+      "description": "Heosphoros re-run on 7 tasks (HPO at 40 epochs, full at 100)",
+      "per_task": [
+        {"task_id": 0, "name": "IAMI_White_Paper", "acc": 0.277, "f1": 0.433},
+        {"task_id": 1, "name": "Love_as_Alignment", "acc": 0.536, "f1": 0.421},
+        {"task_id": 2, "name": "Coherent_Substrate", "acc": 0.609, "f1": 0.556},
+        {"task_id": 3, "name": "Heosphoros_Initiative", "acc": 0.786, "f1": 0.667},
+        {"task_id": 4, "name": "XI_Compression", "acc": 0.950, "f1": 0.941},
+        {"task_id": 5, "name": "The_Octad", "acc": 1.000, "f1": 1.000},
+        {"task_id": 6, "name": "Hunter_Addendum", "acc": 1.000, "f1": 1.000}
+      ]
+    }
+  },
+  "scaling_analysis": {
+    "5_task_baseline": 0.402,
+    "5_task_tuned": 0.854,
+    "7_task_baseline": 0.300,
+    "7_task_tuned_best": 0.744,
+    "degradation_baseline_5_to_7": -0.102,
+    "degradation_tuned_5_to_7": -0.110,
+    "task_0_floor_5tasks": 0.553,
+    "task_0_floor_7tasks": 0.433,
+    "key_finding": "5-task HPO config transfers better to 7 tasks than 7-task HPO config at full training. HPO at 40 epochs overestimates by +0.077."
+  },
+  "parameter_counts": {
+    "5_task_model": 175353,
+    "7_task_model_236hdim": 175827,
+    "7_task_model_292hdim": 233899
+  },
+  "timestamp": "2026-07-11"
+}
