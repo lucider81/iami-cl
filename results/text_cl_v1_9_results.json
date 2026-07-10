@@ -1,0 +1,40 @@
+{
+  "version": "1.9",
+  "description": "Text-appropriate CL with Heosphoros auto-tuning",
+  "architecture": "TF-IDF + MLP",
+  "input_dim": 500,
+  "hidden_dim": 236,
+  "n_tasks": 5,
+  "n_parameters": 175353,
+  "baseline_no_replay": {
+    "mean_f1": 0.4019,
+    "per_task": [
+      {"task_id": 0, "name": "IAMI_White_Paper", "acc": 0.382, "precision": 0.462, "recall": 0.692, "f1": 0.553},
+      {"task_id": 1, "name": "Love_as_Alignment", "acc": 0.200, "precision": 0.250, "recall": 0.444, "f1": 0.333},
+      {"task_id": 2, "name": "Coherent_Substrate", "acc": 0.217, "precision": 0.286, "recall": 0.455, "f1": 0.357},
+      {"task_id": 3, "name": "Heosphoros_Initiative", "acc": 0.200, "precision": 0.250, "recall": 0.444, "f1": 0.333},
+      {"task_id": 4, "name": "The_Octad", "acc": 0.276, "precision": 0.333, "recall": 0.571, "f1": 0.432}
+    ]
+  },
+  "heosphoros_tuned": {
+    "mean_f1": 0.8535,
+    "best_params": {
+      "replay_ratio": 0.285,
+      "buffer_size": 82,
+      "lr": 0.0032,
+      "hidden_dim": 236,
+      "dropout": 0.234
+    },
+    "hpo_iterations": 25,
+    "hpo_time_sec": 22.9,
+    "per_task": [
+      {"task_id": 0, "name": "IAMI_White_Paper", "acc": 0.382, "precision": 0.462, "recall": 0.692, "f1": 0.553},
+      {"task_id": 1, "name": "Love_as_Alignment", "acc": 1.000, "precision": 1.000, "recall": 1.000, "f1": 1.000},
+      {"task_id": 2, "name": "Coherent_Substrate", "acc": 0.826, "precision": 0.714, "recall": 1.000, "f1": 0.714},
+      {"task_id": 3, "name": "Heosphoros_Initiative", "acc": 1.000, "precision": 1.000, "recall": 0.750, "f1": 1.000},
+      {"task_id": 4, "name": "The_Octad", "acc": 1.000, "precision": 1.000, "recall": 1.000, "f1": 1.000}
+    ]
+  },
+  "improvement_f1": 0.452,
+  "documents": ["IAMI_White_Paper", "Love_as_Alignment", "Coherent_Substrate", "Heosphoros_Initiative", "The_Octad"]
+}
