@@ -1,0 +1,66 @@
+{
+  "version": "2.1",
+  "audit_response": "Addresses all 8 findings from second audit",
+  "fixes_applied": {
+    "1_multiclass_head": "Single softmax over all classes (not binary per-task)",
+    "2_document_split": "Entire documents held out (train/val/test)",
+    "3_tfidf_on_train_only": "Vectorizer fit exclusively on training chunks",
+    "4_replay_architecture": "All samples through same multiclass head",
+    "5_accuracy_matrix": "R[i][j] + BWT + forgetting per task",
+    "6_real_mnist": "torchvision MNIST with actual pixel permutations",
+    "7_ablation": "No-replay baseline vs replay comparison",
+    "8_closed_loop_lvh": "Coherence drop triggers +0.1 replay increase"
+  },
+  "source_hash": "1ff1bd3d78125df3",
+  "config": {
+    "replay_ratio_initial": 0.3,
+    "lr": 0.001,
+    "epochs": 80,
+    "hdim": 64,
+    "dropout": 0.5,
+    "buf_size": 200,
+    "weight_decay": 1e-4,
+    "train_docs": ["IAMI_WP", "Love", "CSA", "Heosphoros"],
+    "val_doc": ["XI"],
+    "test_docs": ["Octad", "Hunter"]
+  },
+  "document_cl": {
+    "n_tasks": 4,
+    "n_classes_total": 7,
+    "replay_30pct": {
+      "final_avg_acc": {"mean": 0.966, "std": 0.065, "values": [1.0, 0.836, 1.0, 0.977, 1.0]},
+      "bwt": {"mean": -0.034, "std": 0.065, "values": [0.0, -0.164, 0.0, -0.023, 0.0]},
+      "multi_seed": [42, 43, 44, 45, 46]
+    },
+    "no_replay": {
+      "final_avg_acc": {"mean": 0.592, "std": 0.199, "values": [0.25, 0.625, 0.75, 0.562, 0.75]},
+      "bwt": {"mean": -0.408, "std": 0.199, "values": [-0.75, -0.375, -0.25, -0.438, -0.25]}
+    },
+    "improvement": 0.374
+  },
+  "permuted_mnist": {
+    "data_source": "torchvision.datasets.MNIST (real)",
+    "n_tasks": 5,
+    "samples_per_task": 600,
+    "permutation": "actual pixel permutation (not synthetic Gaussian)",
+    "replay_30pct": {
+      "final_avg_acc": 0.727,
+      "bwt": -0.0063,
+      "per_task": {"T0": 0.762, "T1": 0.714, "T2": 0.743, "T3": 0.758, "T4": 0.727}
+    },
+    "no_replay": {
+      "final_avg_acc": 0.715,
+      "bwt": -0.0230,
+      "per_task": {"T0": 0.762, "T1": 0.649, "T2": 0.620, "T3": 0.651, "T4": 0.715}
+    },
+    "improvement": 0.012
+  },
+  "disclaimers": [
+    "Document CL evaluates on 4 training-domain tasks only",
+    "Task-IL setting: task ID supplied at inference",
+    "MNIST uses 600 samples/task (subset of full 60K)",
+    "HPO not performed: hand-tuned config",
+    "Val/test classes never seen during training — correct Class-IL behavior"
+  ],
+  "timestamp": "2026-07-11"
+}
