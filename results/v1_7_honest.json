@@ -1,0 +1,22 @@
+{
+  "version": "1.7",
+  "label": "IAMI-CL",
+  "timestamp": "2026-07-11T01:08:06.172577",
+  "config": {
+    "n_tasks": 5, "n_train": 500, "n_test": 200, "n_epochs": 2,
+    "batch_size": 32, "lr": 0.002, "replay_ratio": 0.5,
+    "replay_buffer_size": 40,
+    "architecture": {"d_model": 128, "n_layers": 4, "n_heads": 8, "d_ff": 512, "dropout": 0.1, "n_patches": 16},
+    "seed": 42
+  },
+  "parameter_counts": {"total": 808242, "body": 801792, "heads": 6450},
+  "baseline_no_replay": {"0": 0.085, "1": 0.240, "2": 0.295, "3": 0.385, "4": 1.000},
+  "replay_50pct": {"0": 0.995, "1": 0.995, "2": 1.000, "3": 1.000, "4": 1.000},
+  "baseline_avg": 0.401,
+  "replay_avg": 0.998,
+  "improvement_pp": 59.7,
+  "elapsed_seconds": 51.9,
+  "python": "3.12.12",
+  "torch": "2.8.0+cu128",
+  "numpy": "2.2.5"
+}
