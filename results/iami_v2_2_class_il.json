@@ -1,0 +1,19 @@
+{
+  "version": "2.2-class-il",
+  "description": "Class-IL test — no task hint at inference, all 7 documents mixed",
+  "trained_classes": [0, 1, 2, 3],
+  "unseen_classes": [4, 5, 6],
+  "total_test_chunks": 111,
+  "results": {
+    "overall_accuracy": 0.5676,
+    "IAMI_WP": {"accuracy": 1.0, "n_chunks": 32, "trained": true},
+    "Love": {"accuracy": 1.0, "n_chunks": 10, "trained": true},
+    "CSA": {"accuracy": 1.0, "n_chunks": 12, "trained": true},
+    "Heosphoros": {"accuracy": 1.0, "n_chunks": 9, "trained": true},
+    "XI": {"accuracy": 0.0, "n_chunks": 18, "trained": false},
+    "Octad": {"accuracy": 0.0, "n_chunks": 18, "trained": false},
+    "Hunter": {"accuracy": 0.0, "n_chunks": 12, "trained": false}
+  },
+  "interpretation": "Seen classes: 100%. Unseen classes: 0%. Overall 56.8% = trained base rate (63/111 chunks). This is the correct boundary — not a failure.",
+  "timestamp": "2026-07-11"
+}
