@@ -1,0 +1,36 @@
+{
+  "version": "2.2a",
+  "test": "cold-start continuance",
+  "status": "PARTIAL PASS",
+  "verdict": {
+    "functional_identity": "PASS — 0.0000 accuracy difference across all death/rebirth cycles",
+    "bit_exact_identity": "FAIL — dtype widens float32→float64 during JSON round-trip",
+    "h_norm_identity": "PASS — h_norm matches within 1e-6 across all cycles"
+  },
+  "root_cause": {
+    "description": "PyTorch weights are float32. JSON serialization uses tolist() which becomes Python floats. np.array() on reload defaults to float64.",
+    "evidence": "All 5 weight arrays: exact values match (np.array_equal=True) but dtype changes from float32 to float64",
+    "impact": "Accuracy: none. Hash: breaks. Memory: doubles (1.1MB → 2.2MB).",
+    "severity": "cosmetic"
+  },
+  "control_vs_experimental": {
+    "max_accuracy_diff": 0.0,
+    "control_bwt": 0.0,
+    "experimental_bwt": 0.0,
+    "conclusion": "Death/rebirth cycles produce IDENTICAL predictions to uninterrupted control"
+  },
+  "per_cycle": [
+    {"task": 0, "hash_match": false, "h_norm_match": true, "acc_diff": 0.0, "dtype_issue": "float32→float64"},
+    {"task": 1, "hash_match": false, "h_norm_match": true, "acc_diff": 0.0, "dtype_issue": "float32→float64"},
+    {"task": 2, "hash_match": false, "h_norm_match": true, "acc_diff": 0.0, "dtype_issue": "float32→float64"},
+    {"task": 3, "hash_match": false, "h_norm_match": true, "acc_diff": 0.0, "dtype_issue": "float32→float64"}
+  ],
+  "fix_required": {
+    "option_1": "Cast to float32 in PersistentRNN.load_checkpoint(): np.array(w['Wxh'], dtype=np.float32)",
+    "option_2": "Use np.savez() instead of JSON for binary float32 preservation",
+    "option_3": "Hash only values (not bytes) using normalized representation"
+  },
+  "honest_claim": "The organism survives process death with FUNCTIONAL identity. Predictions are identical (0.0000 diff). The SHA-256 hash fails due to JSON float dtype widening (float32→float64) — a serialization artifact, not a knowledge loss. The fix is one line: dtype=np.float32 on reload.",
+  "substrate_independence": "PROVEN at functional level. The weights + hidden state encode complete identity. The substrate (Python process) is separable and disposable.",
+  "timestamp": "2026-07-11"
+}
